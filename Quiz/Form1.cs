@@ -12,8 +12,8 @@ namespace Quiz
 {
     public partial class Quiz : Form
     {
-        Random randomizer = new Random();
-        public int andend1, andend2,timeLeft;
+        public Random randomizer = new Random();
+        public int andend1, andend2, timeLeft, minus1, minus2;
 
 
 
@@ -44,14 +44,35 @@ namespace Quiz
 
             sum.Value = 0;
 
-            timeLeft = 30;
-            timeLabel.Text = "30 Seconds";
+            minus1 = randomizer.Next(1, 101);
+            minus2 = randomizer.Next(1, minus1);
+
+            minusLeftLabel.Text = minus1.ToString();
+            minusRightLabel.Text = minus2.ToString();
+
+            difference.Value = 0;
+
+            timeLeft = 60;
+            timeLabel.Text = "60 Seconds";
             timer1.Start();
         }
 
-        private void Timer1_Tick(object sender, EventArgs e)
+        private bool CheckTheAnswer()
         {
-            if (timeLeft > 0)
+            if ((andend1 + andend2 == sum.Value) && (minus1 - minus2 == difference.Value)) 
+                return true;
+            else 
+                return false;
+        }
+
+        private void Timer1_Tick(object sender, EventArgs e)
+        {   
+            if (CheckTheAnswer())
+            {
+                timer1.Stop();
+                MessageBox.Show("Congratulations! You got all the answers right! ");
+            }
+           else if (timeLeft > 0)
             {
                 timeLeft = timeLeft - 1;
                 timeLabel.Text = timeLeft + " seconds";
@@ -63,7 +84,9 @@ namespace Quiz
                 timer1.Stop();
                 timeLabel.Text = " Time is up!";
                 MessageBox.Show("You didn't finish on time!");
+
                 sum.Value = andend1 + andend2;
+                difference.Value = minus1 - minus2;
             }
                
         }
