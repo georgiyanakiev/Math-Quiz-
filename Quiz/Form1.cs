@@ -13,7 +13,7 @@ namespace Quiz
     public partial class Quiz : Form
     {
         public Random randomizer = new Random();
-        public int andend1, andend2, timeLeft, minus1, minus2;
+        public int andend1, andend2, timeLeft, minus1, minus2,multi1, multi2,divi1,divi2;
 
 
 
@@ -52,14 +52,28 @@ namespace Quiz
 
             difference.Value = 0;
 
-            timeLeft = 60;
-            timeLabel.Text = "60 Seconds";
+            multi1 = randomizer.Next(2, 11);
+            multi2 = randomizer.Next(2, 11);
+            TimesLeftLabel.Text = multi1.ToString();
+            TimesRightLabel.Text = multi2.ToString();
+            product.Value = 0;
+
+            int temp = randomizer.Next(2, 11);
+            divi2 = randomizer.Next(2, 11);
+            divi1 = divi2 * temp;
+            dividedLeftLabel.Text = divi1.ToString();
+            dividedRightLabel.Text = divi2.ToString();
+            quotient.Value = 0;
+            timeLeft = 120;
+            timeLabel.Text = "120 Seconds";
             timer1.Start();
         }
 
         private bool CheckTheAnswer()
         {
-            if ((andend1 + andend2 == sum.Value) && (minus1 - minus2 == difference.Value)) 
+            if ((andend1 + andend2 == sum.Value) && (minus1 - minus2 == difference.Value) 
+                 && (multi1 * multi2 == product.Value)
+                 && (divi1 / divi2 == quotient.Value))
                 return true;
             else 
                 return false;
@@ -87,6 +101,8 @@ namespace Quiz
 
                 sum.Value = andend1 + andend2;
                 difference.Value = minus1 - minus2;
+                product.Value = multi1 * multi2;
+                quotient.Value = divi1 / divi2;
             }
                
         }
